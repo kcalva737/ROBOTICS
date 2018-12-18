@@ -1,4 +1,4 @@
- #include <Servo.h>
+#include <Servo.h>
 #include <SoftwareSerial.h>
 SoftwareSerial xbee(2,3);
 Servo myservo;
@@ -25,13 +25,10 @@ void setup() {
 
 
 void loop() {
-  //Serial.print("Test Two");
-  //if(Serial.available()){
-  //  Serial.print(Serial.read() );
-  //}
-  if(input_string() ){
+  if(input_xbee() ){
     print_input();
       if(pin_assign(command,pin,value) ){
+        Serial.print("True:One");
         test();
         
         switch(command){ //swtich statetment
@@ -52,41 +49,10 @@ void loop() {
         case 'A':      // or 'A'
           readAPin(pin);  // Read analog pin
           break;
-        default:
-          Serial.print("Done\n");
         }
         
       }
   }
-    //test();
-    
-    
-    /*
-    switch(command){ //swtich statetment
-
-    case 'w':      // If received 'w'
-    case 'W':      // or 'W'
-      writeAPin(pin,value); // Write analog pin
-      break;
-    case 'd':      // If received 'd'
-    case 'D':      // or 'D'
-      writeDPin(pin,value); // Write digital pin
-      break;
-    case 'r':      // If received 'r'
-    case 'R':      // or 'R'
-      readDPin(pin);  // Read digital pin
-      break;
-    case 'a':      // If received 'a'
-    case 'A':      // or 'A'
-      readAPin(pin);  // Read analog pin
-      break;
-
-    case 'M':
-    case 'm':
-      //customCode(pin,value); //code for this has not been implemented yet
-      servoMove(pin,value);
-      break;
-    } */
 }
 
 
