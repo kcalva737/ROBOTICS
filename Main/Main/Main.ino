@@ -1,4 +1,4 @@
-#include <Servo.h>
+ #include <Servo.h>
 #include <SoftwareSerial.h>
 SoftwareSerial xbee(2,3);
 Servo myservo;
@@ -19,7 +19,7 @@ void setup() {
   
   delay(500);
   //Serial.print("Test One");
-  intro();
+  //intro();
 }
 
 
@@ -29,13 +29,39 @@ void loop() {
   //if(Serial.available()){
   //  Serial.print(Serial.read() );
   //}
-  if(input_string() && pin_assign(command,pin,value) ){ //if valid string has been detected
-    
-    //;//function that returns char command ,int pin, int value
-    //test();
+  if(input_string() ){
     print_input();
+      if(pin_assign(command,pin,value) ){
+        test();
+        
+        switch(command){ //swtich statetment
+
+        case 'w':      // If received 'w'
+        case 'W':      // or 'W'
+          writeAPin(pin,value); // Write analog pin
+          break;
+        case 'd':      // If received 'd'
+        case 'D':      // or 'D'
+          writeDPin(pin,value); // Write digital pin
+          break;
+        case 'r':      // If received 'r'
+        case 'R':      // or 'R'
+          readDPin(pin);  // Read digital pin
+          break;
+        case 'a':      // If received 'a'
+        case 'A':      // or 'A'
+          readAPin(pin);  // Read analog pin
+          break;
+        default:
+          Serial.print("Done\n");
+        }
+        
+      }
+  }
+    //test();
     
     
+    /*
     switch(command){ //swtich statetment
 
     case 'w':      // If received 'w'
@@ -60,8 +86,7 @@ void loop() {
       //customCode(pin,value); //code for this has not been implemented yet
       servoMove(pin,value);
       break;
-    }
-  }
+    } */
 }
 
 
@@ -75,17 +100,18 @@ bool input_string(){//Reads input from the serial communication
   //#D12-1234N
   // 0123456789
   int i;
-  byte temp;
-  if(Serial.available() > 0){
+  char temp;
+  if(Serial.available() ){
      temp = Serial.read();
-    Serial.println(temp);
+    Serial.println(char(temp) );
+    Serial.println(Serial.available() );
   }
   if(Serial.available() >= maxlength-1 && temp == '#'){
     for(i=0;i<maxlength-1;i++){
       myString[i] = Serial.read();
       //Serial.println(myString[i] );
     }
-    myString[i] = '\0';
+    myString[8] = '\0';
     
     Serial.println(myString);
     
