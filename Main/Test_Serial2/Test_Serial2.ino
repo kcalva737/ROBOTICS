@@ -155,7 +155,8 @@ void intro(){//this code runs on start up
   Serial.println(" w = Write Analog pin:3,5,6,9,10,11 Value:(0-255)");
   Serial.println(" d = Write digital");
   Serial.println(" r = Read Digital");
-  Serial.println(" a = Read Analog\n");
+  Serial.println(" a = Read Analog \n");
+  
 }
 
 
