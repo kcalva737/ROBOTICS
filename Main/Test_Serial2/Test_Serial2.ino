@@ -1,8 +1,6 @@
-#include <Servo.h>
-Servo myservo;
-
+//#include <Servo.h>
+//Servo myservo;
 const int maxlength = 9;
-
 int pin;
 int value;
 char command;
@@ -11,16 +9,21 @@ char myString[maxlength];
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+  delay(5000);
+  //Serial.print("Test One");
   intro();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  //Serial.print("Test Two");
+  //if(Serial.available()){
+  //  Serial.print(Serial.read() );
+  //}
   if(input_string() ){ //if valid string has been detected
     
     pin_assign(command,pin,value);//function that returns char command ,int pin, int value
     //test();
-    //print_input()
+    print_input();
     
     
     switch(command){ //swtich statetment
@@ -49,6 +52,9 @@ void loop() {
       break;
     }
   }
+  //else{
+    //Serial.print("Not valid String");  
+  //}
 }
 
 bool input_string(){//Reads input from the serial communication
@@ -62,10 +68,12 @@ bool input_string(){//Reads input from the serial communication
     }
     /*
     if(myString[3] != '-'){
-      Serial.println(myString[3] );
+       );
       return false;
     }
     */
+    Serial.println(myString);
+    while(Serial.read() );
     
     return true;
   }
@@ -101,13 +109,9 @@ void pin_assign(char &command, int &pin, int &value){ //from the input string, t
 
 void servoMove(int pin, int value){
   //Servo myservo;
-  myservo.attach(pin);
-  myservo.write(value);  
+  //myservo.attach(pin);
+  //myservo.write(value);  
 }
-
-
-
-
 
 void writeDPin(int pin, int val) //this function writes a digital signal to pin 1-13
 {
