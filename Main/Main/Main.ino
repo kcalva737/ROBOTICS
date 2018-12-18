@@ -6,11 +6,8 @@
  * 
  */
 
-#inlcude <Console.h>
-#include <Servo.h>
-#include <SoftwareSerial.h>
-SoftwareSerial xbee(2,3);
-Servo myservo;
+//#inlcude <Console.h>
+
 
 const int maxlength = 9;
 int pin;
@@ -28,14 +25,13 @@ void setup() {
   
   //delay(500);
   //Serial.print("Test One");
-  while(!Console);
+  //while(!Console);
   intro();
 }
 
 
 
 void loop() {
-  if(Console.open
   if(input_string() ){
     //print_input();
       if(pin_assign(command,pin,myValue) ){
@@ -86,16 +82,21 @@ bool input_string(){//Reads input from the serial communication
   //  Serial.println(char(temp) );
   //  Serial.println(Serial.available() );
   //}
-  if(Serial.available() >= maxlength-1 && Serial.read() == '#'){
+  char temp = Serial.read();
+  if(Serial.available() >= maxlength-1 && temp == '#'){
     for(i=0;i<maxlength-1;i++){
       myString[i] = Serial.read();
       //Serial.println(myString[i] );
     }
     myString[8] = '\0';
     
-    Serial.println(myString);
+    //Serial.println(myString);
     
     return true;
+  }
+  else if(temp == '?'){
+  intro();
+  return false;
   }
   else{
     return false;
@@ -213,7 +214,7 @@ void print_input(){//prints input for the code
   Serial.println(myValue);  
 }
 
-void intro(bool showMe){//this code runs on start up 
+void intro(){//this code runs on start up 
   Serial.print("Hello, This code is written by SHPE RED 2018.");
   Serial.println("Intro for using this code...\n");
   Serial.println("Commands are inputed in this form:");
