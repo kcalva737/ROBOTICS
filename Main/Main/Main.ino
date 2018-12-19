@@ -5,9 +5,11 @@
  * 
  * 
  */
-
-//#inlcude <Console.h>
-
+#include "arduino.h"
+#include <Servo.h>
+#include <SoftwareSerial.h>
+SoftwareSerial xbee(2,3);
+Servo myservo;
 
 const int maxlength = 9;
 int pin;
@@ -15,10 +17,7 @@ int myValue;
 char command;
 char myString[maxlength];
 
-
-
-
-void setup() {
+void setup(){
   // put your setup code here, to run once:
   Serial.begin(9600);
   xbee.begin(9600);
@@ -28,9 +27,6 @@ void setup() {
   //while(!Console);
   intro();
 }
-
-
-
 void loop() {
   if(input_string() ){
     //print_input();
@@ -196,9 +192,6 @@ void readAPin(int pin) //this function will read a value from the analog pins A0
   return;
 }
 
-
-
-
 void test(){ //Debugging code
   Serial.println(myString);  
   
@@ -225,5 +218,4 @@ void intro(){//this code runs on start up
   Serial.println(" a = Read Analog");
   Serial.println(" m = servoMove");
 }
-
 
