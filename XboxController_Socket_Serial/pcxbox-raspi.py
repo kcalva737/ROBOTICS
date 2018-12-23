@@ -78,7 +78,7 @@ class controller:
         else:
             pin = "0" + str(pin)
 
-        string = "#"+chan+command+pin+"-"+value+" "
+        string = "#"+chan+command+pin+"-"+value
         #print(string)
         return string
     
@@ -134,7 +134,8 @@ while True:
         for i in range(len(myCommand)):
             if SOCKET:
                 send_data(conn,myCommand[i])
-            
+                sleep(0.01)
+                
             print(myCommand[i] )
     except KeyboardInterrupt:
         if SOCKET:
