@@ -44,10 +44,11 @@ class SerialString{
 
 bool SerialString::input_string(){
   int i;
-  char temp = Serial.read();
+  char tempOne = Serial.read();
+  char tempTwo = Serial1.read();
   delay(10);
   
-  if(Serial.available() >= maxlength-1 && temp == '#'){
+  if(Serial.available() >= maxlength-1 && tempOne == '#'){
     for(i=0;i<maxlength-1;i++){
       myString[i] = Serial.read();
     }
@@ -55,7 +56,15 @@ bool SerialString::input_string(){
     //Serial.println("input_string() One");
     return true;
   }
-  else if(temp == '?'){
+  else if(Serial1.available() >= maxlength-1 && tempTwo == '#'){
+    for(i=0;i<maxlength-1;i++){
+      myString[i] = Serial1.read();
+    }
+    myString[8] = '\0';
+    Serial.println("input_string() Two");
+    return true;
+  }
+  else if(tempOne == '?' || tempTwo == '?'){
     //Serial.println("input_string() Two");
     intro();
     return false;

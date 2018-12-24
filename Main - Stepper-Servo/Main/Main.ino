@@ -16,6 +16,7 @@ Stepp myStepper(0,52,50,23,25,27,29,31,35);
 
 void setup(){
   Serial.begin(9600);
+  Serial1.begin(9600);
   xbee.begin(9600);
   myStepper.step_start();
   //myString.intro();
