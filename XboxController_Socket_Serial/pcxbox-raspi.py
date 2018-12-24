@@ -40,6 +40,9 @@ class controller:
     total =[]
     channel = "Hello"
 
+    maxCounter = 120000#1000000
+    counter = [0] * 10
+
     def __init__(self, channel ):
         pygame.init()
         pygame.joystick.init()
@@ -81,7 +84,11 @@ class controller:
         string = "#"+chan+command+pin+"-"+value
         #print(string)
         return string
-    
+
+    def restrictPWM(self,value):
+        value = int(value/4.01 )
+        return value
+
     def getValues(self):
         myString = []
         pygame.event.pump()
@@ -111,15 +118,36 @@ class controller:
                 if(self.original[i][j] != self.value[i][j] ):
                     self.original[i][j] = self.value[i][j]
                     if(j == 2):
-                        temp = self.print_command('',"A",9, self.value[i][j])
+                        temp = self.print_command('',"W",9, self.restrictPWM(self.value[i][j]) ) 
                         myString.append(temp)
                     elif(j == 5):
-                        temp = self.print_command('',"A",10, self.value[i][j])
+                        temp = self.print_command('',"W",10, self.restrictPWM(self.value[i][j]) )
                         myString.append(temp)
-                    #print(temp)
+                    elif(j == 14):
+                        temp = self.print_command('',"?",00, 0 )
+                        myString.append('?')
+                
+                if(self.value[0][8] == 1):
+                    if(self.counter[0] < self.maxCounter):
+                        self.counter[0] = self.counter[0]+1
+                    elif(self.counter[0] >= self.maxCounter):
+                        temp = self.print_command('',"T",00, 10 )
+                        myString.append(temp)
+                        self.counter[0] = 0
+                if(self.value[0][7] == 1):
+                    if(self.counter[1] < self.maxCounter):
+                        self.counter[1] = self.counter[1]+1
+                    elif(self.counter[1] >= self.maxCounter):
+                        temp = self.print_command('',"t",00, 10 )
+                        myString.append(temp)
+                        self.counter[1] = 0
+                        
+
+                    #print(j)
+                    #print(self.value[i][j] )
         return myString
 
-SOCKET = False
+SOCKET = True
 
 xboxController = controller("A")
 xboxController.getValues()
@@ -135,7 +163,6 @@ while True:
             if SOCKET:
                 send_data(conn,myCommand[i])
                 sleep(0.01)
-                
             print(myCommand[i] )
     except KeyboardInterrupt:
         if SOCKET:
