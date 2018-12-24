@@ -9,6 +9,7 @@
 #include "arduinoPin.h"
 #include "Stepper.h"
 #include <Servo.h>
+char channel = 'B';
 
 Servo myservo;
 SerialString myString;
