@@ -118,27 +118,27 @@ class controller:
                 if(self.original[i][j] != self.value[i][j] ):
                     self.original[i][j] = self.value[i][j]
                     if(j == 2):
-                        temp = self.print_command('',"W",9, self.restrictPWM(self.value[i][j]) ) 
+                        temp = self.print_command('B',"w",9, self.restrictPWM(self.value[i][j]) ) 
                         myString.append(temp)
                     elif(j == 5):
-                        temp = self.print_command('',"W",10, self.restrictPWM(self.value[i][j]) )
+                        temp = self.print_command('B',"w",10, self.restrictPWM(self.value[i][j]) )
                         myString.append(temp)
                     elif(j == 14):
-                        temp = self.print_command('',"?",00, 0 )
+                        #temp = self.print_command('B',"?",00, 0 )
                         myString.append('?')
                 
                 if(self.value[0][8] == 1):
                     if(self.counter[0] < self.maxCounter):
                         self.counter[0] = self.counter[0]+1
                     elif(self.counter[0] >= self.maxCounter):
-                        temp = self.print_command('',"T",00, 10 )
+                        temp = self.print_command('B',"T",00, 10 )
                         myString.append(temp)
                         self.counter[0] = 0
                 if(self.value[0][7] == 1):
                     if(self.counter[1] < self.maxCounter):
                         self.counter[1] = self.counter[1]+1
                     elif(self.counter[1] >= self.maxCounter):
-                        temp = self.print_command('',"t",00, 10 )
+                        temp = self.print_command('B',"t",00, 10 )
                         myString.append(temp)
                         self.counter[1] = 0
                         
@@ -149,12 +149,12 @@ class controller:
 
 SOCKET = True
 
-xboxController = controller("A")
-xboxController.getValues()
-
 if SOCKET:
     s = setupServer()
     conn = setupConnection()
+
+xboxController = controller("A")
+xboxController.getValues()
 
 while True:
     try:
