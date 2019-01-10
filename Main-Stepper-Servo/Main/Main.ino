@@ -7,11 +7,12 @@
  */
 #include "arduino.h"
 #include "arduinoPin.h"
-#include "Stepper.h"
-#include <Servo.h>
+#include "stepper.h"
+#include "servo.h"
+
 char channel = 'B';
 
-Servo myservo;
+myServo myservo;
 SerialString myString;
 Stepp myStepper(0,52,50,23,25,27,29,31,35);
 
@@ -52,7 +53,7 @@ void loop() {
           break;
         case 'S':
         case 's':
-          servoMove(myString.pin(), myString.val() );
+          myservo.servoMove(myString.pin(), myString.val() );
           break;
         case 'T':
           for(int i=0;i<myString.val();i++){
@@ -68,10 +69,4 @@ void loop() {
       }
   }
   
-}
-
-void servoMove(int pin, int myValue){
-  myservo.attach(pin);
-  myservo.write(myValue);  
-  return;
 }

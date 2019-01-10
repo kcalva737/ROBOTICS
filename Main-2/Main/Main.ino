@@ -5,14 +5,13 @@
  * 
  * 
  */
-
 #include "arduino.h"
 #include "arduinoPin.h"
-#include <Servo.h>
+#include "servo.h"
+
 char channel = 'B';
 
-
-Servo myservo;
+myServo myServo;
 SerialString myString;
 
 void setup(){
@@ -41,16 +40,10 @@ void loop() {
           readAPin(/*myString.channel(),*/myString.pin() );  // Read analog pin
           break;
         case 'm':
-          servoMove(myString.pin(),myString.val() );
+          myServo.servoMove(myString.pin(),myString.val() );
           break;
         }
       }
   }
   
-}
-
-void servoMove(int pin, int myValue){
-  myservo.attach(pin);
-  myservo.write(myValue);  
-  return;
 }
