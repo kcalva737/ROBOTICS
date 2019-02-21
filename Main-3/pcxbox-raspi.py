@@ -2,6 +2,9 @@ import pygame
 import serial
 import socket
 from time import sleep
+import sys  
+reload(sys)  
+sys.setdefaultencoding('utf8')
 
 host = ''
 port = 5560
@@ -30,6 +33,7 @@ def send_data(conn,myString):
 #0xff ff ff
 # 0000 0000-0000 0000-0000 0000
 def encode(pin,value):
+    #value = value + 1
     myString = ord('#')<<16
     myString |= pin<<10
     myString |= value
@@ -37,6 +41,10 @@ def encode(pin,value):
     val1 = chr( (myString & 0xff0000) >> 16)
     val2 = chr( (myString & 0x00ff00) >> 8)
     val3 = chr(myString & 0x0000ff)
+    #print(bin(bytes(val3)))
+    print ord(val1)#,end=' ')  + val2 + val3))
+    print ord(val2)# ,end=' ')
+    print ord(val3)#,end=' ')
     
     return val1  + val2 + val3
 
@@ -57,6 +65,8 @@ class controller:
 
     maxCounter = 120000#1000000
     counter = [0] * 10
+
+    Socket = False
 
     def __init__(self, channel ):
         pygame.init()
@@ -133,11 +143,18 @@ class controller:
                 if(self.original[i][j] != self.value[i][j] ):
                     self.original[i][j] = self.value[i][j]
                     if(j == 2):
-                        temp = self.print_command('B',"w",9, self.restrictPWM(self.value[i][j]) ) 
+                        if self.Socket:
+                            temp = self.print_command('B',"w",9, self.restrictPWM(self.value[i][j]) ) 
+                        else:
+                            temp = encode(9,self.restrictPWM(self.value[i][j]) )
+                        
                         myString.append(temp)
                     elif(j == 5):
-                        temp = self.print_command('B',"w",10, self.restrictPWM(self.value[i][j]) )
-                        print(encode(10, self.restrictPWM(self.value[i][j]) ) )
+                        if self.Socket:
+                            temp = self.print_command('B',"w",10, self.restrictPWM(self.value[i][j]) )
+                        else:
+                            temp = encode(10,self.restrictPWM(self.value[i][j]) )
+                        #print(encode(10, self.restrictPWM(self.value[i][j]) ) )
                         myString.append(temp)
                     elif(j == 14):
                         #temp = self.print_command('B',"?",00, 0 )
@@ -147,14 +164,21 @@ class controller:
                     if(self.counter[0] < self.maxCounter):
                         self.counter[0] = self.counter[0]+1
                     elif(self.counter[0] >= self.maxCounter):
-                        temp = self.print_command('B',"T",00, 10 )
+                        if self.Socket:
+                            temp = self.print_command('B',"T",00, 10 )
+                        else:
+                            temp = encode(13,10)
+                        
                         myString.append(temp)
                         self.counter[0] = 0
                 if(self.value[0][7] == 1):
                     if(self.counter[1] < self.maxCounter):
                         self.counter[1] = self.counter[1]+1
                     elif(self.counter[1] >= self.maxCounter):
-                        temp = self.print_command('B',"t",00, 10 )
+                        if self.Socket:
+                            temp = self.print_command('B',"t",00, 10 )
+                        else:
+                            temp = encode(14,10)
                         myString.append(temp)
                         self.counter[1] = 0
                         
@@ -182,14 +206,16 @@ while True:
         if SOCKET:
             myCommand = xboxController.getValues()
             for i in range(len(myCommand)):
-                if SOCKET:
-                    send_data(conn,myCommand[i])
-                    sleep(0.01)
+                #if SOCKET:
+                send_data(conn,myCommand[i])
+                sleep(0.01)
                 print(myCommand[i] )
-        #else:
-        myCommand = xboxController.getValues()
-        for i in range(len(myCommand)):
-            print(myCommand[i])
+        else:
+            myCommand = xboxController.getValues()
+            for i in range(len(myCommand)):
+                serialPort.write(myCommand[i].decode('unicode_escape').encode('utf-8') )
+
+                print(myCommand[i])
     except KeyboardInterrupt:
         if SOCKET:
             conn.close()
