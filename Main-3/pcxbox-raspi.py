@@ -137,6 +137,7 @@ class controller:
                         myString.append(temp)
                     elif(j == 5):
                         temp = self.print_command('B',"w",10, self.restrictPWM(self.value[i][j]) )
+                        print(encode(10, self.restrictPWM(self.value[i][j]) ) )
                         myString.append(temp)
                     elif(j == 14):
                         #temp = self.print_command('B',"?",00, 0 )
@@ -162,24 +163,35 @@ class controller:
                     #print(self.value[i][j] )
         return myString
 
-SOCKET = True
+SOCKET = False
 
 if SOCKET:
     s = setupServer()
     conn = setupConnection()
+else:
+    serialPort = serial.Serial('/dev/ttyUSB0',9600)
+    serialPort.close()
+    serialPort.open() 
+    #serialPort.write(string.encode())
 
 xboxController = controller("A")
 xboxController.getValues()
 
 while True:
     try:
+        if SOCKET:
+            myCommand = xboxController.getValues()
+            for i in range(len(myCommand)):
+                if SOCKET:
+                    send_data(conn,myCommand[i])
+                    sleep(0.01)
+                print(myCommand[i] )
+        #else:
         myCommand = xboxController.getValues()
         for i in range(len(myCommand)):
-            if SOCKET:
-                send_data(conn,myCommand[i])
-                sleep(0.01)
-            print(myCommand[i] )
+            print(myCommand[i])
     except KeyboardInterrupt:
         if SOCKET:
             conn.close()
         quit()
+
