@@ -11,7 +11,6 @@ def encode(pin,value):
     val2 = chr( (myString & 0x00ff00) >> 8)
     val3 = chr(myString & 0x0000ff)
     
-    
     return val1  + val2 + val3
 
 pin = 10
