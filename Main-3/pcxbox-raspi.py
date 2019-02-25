@@ -3,6 +3,8 @@ import serial
 import socket
 from time import sleep
 import sys  
+import math
+import time
 reload(sys)  
 sys.setdefaultencoding('utf8')
 
@@ -141,7 +143,16 @@ class controller:
         for i in range(self.total_control):
             for j in range(int( self.total[i] ) ):
                 if(self.original[i][j] != self.value[i][j] ):
-                    self.original[i][j] = self.value[i][j]
+                    #self.original[i][j] = self.value[i][j]
+                    if(abs(self.value[i][j] - self.original[i][j] ) < 1000 ):
+                        self.original[i][j] = self.value[i][j]
+                    elif(self.value[i][j] > self.original[i][j] ):
+                        self.original[i][j]+= math.sqrt(abs(self.original[i][j]-self.value[i][j])+1)
+                    elif(self.value[i][j] < self.original[i][j] ):
+                        self.original[i][j]-= math.sqrt(abs(self.original[i][j]-self.value[i][j])+1)
+                    time.sleep(1)
+                    print(j)#prints out value of input being pressed
+                    print(self.value[i][j] )#prints value of input
                     if(j == 2):
                         if self.Socket:
                             temp = self.print_command('B',"w",9, self.restrictPWM(self.value[i][j]) ) 
@@ -183,8 +194,7 @@ class controller:
                         self.counter[1] = 0
                         
 
-                    #print(j)
-                    #print(self.value[i][j] )
+                
         return myString
 
 SOCKET = False
@@ -193,10 +203,11 @@ if SOCKET:
     s = setupServer()
     conn = setupConnection()
 else:
-    serialPort = serial.Serial('/dev/ttyUSB0',9600)
-    serialPort.close()
-    serialPort.open() 
+    #serialPort = serial.Serial('/dev/ttyUSB0',9600)
+    #serialPort.close()
+    #serialPort.open() 
     #serialPort.write(string.encode())
+    print("test: ")
 
 xboxController = controller("A")
 xboxController.getValues()
@@ -213,9 +224,9 @@ while True:
         else:
             myCommand = xboxController.getValues()
             for i in range(len(myCommand)):
-                serialPort.write(myCommand[i].decode('unicode_escape').encode('utf-8') )
-
-                print(myCommand[i])
+                #serialPort.write(myCommand[i])
+                #print(myCommand[i])
+                print  ""
     except KeyboardInterrupt:
         if SOCKET:
             conn.close()

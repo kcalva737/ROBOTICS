@@ -28,6 +28,7 @@ void decode(unsigned char *myChar,int& pin, int& value){
 class SerialString{
   //#B13-1234N
   // 0123456789
+  //public:
   private:
   
     int maxlength;
@@ -43,17 +44,19 @@ class SerialString{
     SerialString(){
       maxlength = 9;
       myString = new char[maxlength];
+      myCommand = '+';
       //myChannel = channel;
     }   
-    int pin(){
-      return myPin;
+    int& pin(){
+      return this->myPin;
     }
-    int val(){
-      return myValue;  
+    int& val(){
+      return this->myValue;  
     }
     char command(){
       return myCommand;
     }
+    
     bool input_string();
     bool input_xbee();
     bool pin_assign();
@@ -119,7 +122,8 @@ bool SerialString::input_xbee(){
 */
 
 bool SerialString::input_xbee(){//test function, need further test
-  char myChar[4];
+  unsigned char myChar[4];
+  this->print_input();
   if(xbee.available() <= 3){//if length is less than 3, return false
     return false;
   }
@@ -131,7 +135,7 @@ bool SerialString::input_xbee(){//test function, need further test
     myChar[i] = xbee.read();
   }
 
-  decode(myChar,myPin,myCommand);//convert str to int
+  decode(myChar,this->myPin,this->myValue);//convert str to int
 
   return true;//successfully converted, return true
 
