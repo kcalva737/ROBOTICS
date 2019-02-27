@@ -44,9 +44,8 @@ def encode(pin,value):
     val2 = chr( (myString & 0x00ff00) >> 8)
     val3 = chr(myString & 0x0000ff)
     #print(bin(bytes(val3)))
-    print ord(val1)#,end=' ')  + val2 + val3))
-    print ord(val2)# ,end=' ')
-    print ord(val3)#,end=' ')
+    #print ord(val1)#,end=' ')  + val2 + val3))
+    #print ord(val2)# ,end=' ')
     
     return val1  + val2 + val3
 
@@ -144,27 +143,35 @@ class controller:
             for j in range(int( self.total[i] ) ):
                 if(self.original[i][j] != self.value[i][j] ):
                     #self.original[i][j] = self.value[i][j]
-                    if(abs(self.value[i][j] - self.original[i][j] ) < 1000 ):
-                        self.original[i][j] = self.value[i][j]
-                    elif(self.value[i][j] > self.original[i][j] ):
-                        self.original[i][j]+= math.sqrt(abs(self.original[i][j]-self.value[i][j])+1)
+                    #print "abs change in val: ",i," and  ",j #0 and 1
+                    #self.original[i][j] = self.value[i][j]
+                    
+                    
+
+                    # if(abs(self.value[i][j] - self.original[i][j] ) < 1000 ):
+                        
+                    if(self.value[i][j] > self.original[i][j] ):
+                        self.original[i][j]+= 1+abs(self.value[i][j] - self.original[i][j] )/10#math.sqrt(abs(self.original[i][j]-self.value[i][j])+1)
                     elif(self.value[i][j] < self.original[i][j] ):
-                        self.original[i][j]-= math.sqrt(abs(self.original[i][j]-self.value[i][j])+1)
-                    time.sleep(1)
-                    print(j)#prints out value of input being pressed
-                    print(self.value[i][j] )#prints value of input
+                        self.original[i][j]-= 1+abs(self.value[i][j] - self.original[i][j] )/10 #math.sqrt(abs(self.original[i][j]-self.value[i][j])+1)
+                    
+                    time.sleep(0.02)
+                    print  "abs change in val: ", abs(self.value[i][j] - self.original[i][j] ),"value: ",self.original[i][j]
+                    
+                    #print(j)#prints out value of input being pressed
+                    #print(self.value[i][j] )#prints value of input
                     if(j == 2):
                         if self.Socket:
-                            temp = self.print_command('B',"w",9, self.restrictPWM(self.value[i][j]) ) 
+                            temp = self.print_command('B',"w",9, self.restrictPWM(self.original[i][j]) ) 
                         else:
-                            temp = encode(9,self.restrictPWM(self.value[i][j]) )
+                            temp = encode(9,self.restrictPWM(self.original[i][j]) )
                         
                         myString.append(temp)
                     elif(j == 5):
                         if self.Socket:
-                            temp = self.print_command('B',"w",10, self.restrictPWM(self.value[i][j]) )
+                            temp = self.print_command('B',"w",10, self.restrictPWM(self.original[i][j]) )
                         else:
-                            temp = encode(10,self.restrictPWM(self.value[i][j]) )
+                            temp = encode(10,self.restrictPWM(self.original[i][j]) )
                         #print(encode(10, self.restrictPWM(self.value[i][j]) ) )
                         myString.append(temp)
                     elif(j == 14):
@@ -203,11 +210,11 @@ if SOCKET:
     s = setupServer()
     conn = setupConnection()
 else:
-    #serialPort = serial.Serial('/dev/ttyUSB0',9600)
-    #serialPort.close()
-    #serialPort.open() 
+    serialPort = serial.Serial('/dev/ttyUSB0',9600)
+    serialPort.close()
+    serialPort.open() 
     #serialPort.write(string.encode())
-    print("test: ")
+    #print("test: ")
 
 xboxController = controller("A")
 xboxController.getValues()
@@ -220,13 +227,13 @@ while True:
                 #if SOCKET:
                 send_data(conn,myCommand[i])
                 sleep(0.01)
-                print(myCommand[i] )
+                #print(myCommand[i] )
         else:
             myCommand = xboxController.getValues()
             for i in range(len(myCommand)):
-                #serialPort.write(myCommand[i])
+                serialPort.write(myCommand[i])
                 #print(myCommand[i])
-                print  ""
+                #print  ""
     except KeyboardInterrupt:
         if SOCKET:
             conn.close()

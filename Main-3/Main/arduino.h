@@ -95,41 +95,16 @@ bool SerialString::input_string(){
   }
 }
 
-/*
-bool SerialString::input_xbee(){
-    int i;
-    byte temp;
-    char tempOne = xbee.read();
-    
-    delay(10);
-    if(xbee.available() >=  maxlength-1 &&  tempOne == '#'){
-      for(i=0;i < maxlength-1;i++){
-        temp = xbee.read();
-        myString[i] = temp;
-      }
-      myString[maxlength-1] = '\0';
-      
-      return true;
-    }
-    else if( temp == '?' ){
-      intro();
-      return false;
-    }
-    else{
-      return false;
-    }
-}
-*/
-
 bool SerialString::input_xbee(){//test function, need further test
   unsigned char myChar[4];
-  this->print_input();
-  if(xbee.available() <= 3){//if length is less than 3, return false
+  delay(1);
+  if(xbee.available() < 3){//if length is less than 3, return false
     return false;
   }
-  else if(! (xbee.read() =='#')){//if first char is not #, return false
+  if(xbee.read() !='#'){//if first char is not #, return false
     return false;
   }
+  
   myChar[0] = '#';
   for(unsigned int i=1;i<3;i++){//saving string
     myChar[i] = xbee.read();
