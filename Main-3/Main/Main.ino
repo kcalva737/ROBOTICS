@@ -20,7 +20,7 @@ void setup(){
   //myString.intro();
 }
 void loop() {
-  if(myString.input_xbee() ){//alternate between input.string() and input_xbee()
+  if(myString.input_xbee() ){//alternate between input.string() and input_xbee() 
       myString.print_input();
       switch(myString.pin()){
         case 13:
@@ -28,6 +28,16 @@ void loop() {
           break;
         case 9:
           writeAPin(myString.pin(),myString.val() );
+        //idea code for driving robot
+        /*case 64: //send xval code of 64- xvalue
+         * int tempVal = input.value;
+         * while(!input.Xbee){};
+         * case 65: send yval code of 65 - yvalue
+         * int tempval2 = input.value
+         *  drive car(xvalue, y value);
+         * default:
+         *  break; faulty code
+        */
         
       }
   }

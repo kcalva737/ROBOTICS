@@ -6,8 +6,8 @@ extern char channel;
 SoftwareSerial xbee(2,3);
 
 void decode(unsigned char *myChar,int& pin, int& value){
-  pin=0;
-  value=0;
+  pin=0;//range: [0-65]
+  value=0;//range: [0-1023]
 
   for(unsigned int i=0;i<8;i++){
     value += (myChar[2]&1) * (1<<i);

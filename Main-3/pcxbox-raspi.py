@@ -151,7 +151,7 @@ class controller:
                     # if(abs(self.value[i][j] - self.original[i][j] ) < 1000 ):
                         
                     if(self.value[i][j] > self.original[i][j] ):
-                        self.original[i][j]+= 1+abs(self.value[i][j] - self.original[i][j] )/10#math.sqrt(abs(self.original[i][j]-self.value[i][j])+1)
+                        self.original[i][j] += 1 + abs(self.value[i][j] - self.original[i][j] )/10#math.sqrt(abs(self.original[i][j]-self.value[i][j])+1)
                     elif(self.value[i][j] < self.original[i][j] ):
                         self.original[i][j]-= 1+abs(self.value[i][j] - self.original[i][j] )/10 #math.sqrt(abs(self.original[i][j]-self.value[i][j])+1)
                     
