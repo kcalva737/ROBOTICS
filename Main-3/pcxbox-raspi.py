@@ -143,7 +143,7 @@ class controller:
             for j in range(int( self.total[i] ) ):
                 if(self.original[i][j] != self.value[i][j] ):
                     #self.original[i][j] = self.value[i][j]
-                    #print "abs change in val: ",i," and  ",j #0 and 1
+                    print "change in val: ",i," and  ",j #index of the values changing
                     #self.original[i][j] = self.value[i][j]
                     
                     
@@ -156,10 +156,10 @@ class controller:
                         self.original[i][j]-= 1+abs(self.value[i][j] - self.original[i][j] )/10 #math.sqrt(abs(self.original[i][j]-self.value[i][j])+1)
                     
                     time.sleep(0.02)
-                    print  "abs change in val: ", abs(self.value[i][j] - self.original[i][j] ),"value: ",self.original[i][j]
+                    #print  "abs change in val: ", abs(self.value[i][j] - self.original[i][j] ),"value: ",self.original[i][j]
                     
                     #print(j)#prints out value of input being pressed
-                    #print(self.value[i][j] )#prints value of input
+                    print(self.value[i][j] )#prints value of input
                     if(j == 2):
                         if self.Socket:
                             temp = self.print_command('B',"w",9, self.restrictPWM(self.original[i][j]) ) 
@@ -177,6 +177,13 @@ class controller:
                     elif(j == 14):
                         #temp = self.print_command('B',"?",00, 0 )
                         myString.append('?')
+                    #6 and 9 map to A and Y
+                    elif(j == 6):
+                        temp = encode(13,self.original[0][6])
+                        myString.append(temp)
+                    elif(j == 9):
+                        temp = encode(12,self.original[0][9])
+                        myString.append(temp)
                 
                 if(self.value[0][8] == 1):
                     if(self.counter[0] < self.maxCounter):
@@ -199,6 +206,9 @@ class controller:
                             temp = encode(14,10)
                         myString.append(temp)
                         self.counter[1] = 0
+
+                
+                
                         
 
                 

@@ -13,6 +13,7 @@ char channel = 'B';
 
 myServo myServo;
 SerialString myString;
+relayControl ballLoad(12,13);
 
 void setup(){
   Serial.begin(9600);
@@ -24,10 +25,15 @@ void loop() {
       myString.print_input();
       switch(myString.pin()){
         case 13:
-          writeDPin(myString.pin(),myString.val() );
+          //writeDPin(myString.pin(),myString.val() );
+          ballLoad.relay_button(myString.val() ,0);
+          break;
+        case 12:
+          ballLoad.relay_button(0,myString.val());
           break;
         case 9:
           writeAPin(myString.pin(),myString.val() );
+        
         //idea code for driving robot
         /*case 64: //send xval code of 64- xvalue
          * int tempVal = input.value;
@@ -37,6 +43,13 @@ void loop() {
          *  drive car(xvalue, y value);
          * default:
          *  break; faulty code
+         *  
+         * new ideal code:
+         * case 64:
+         *  tempVal = pinRead:
+         * case 65:
+         *  tempVal2 = pinRead
+         *  move the robot(tempVal, tempVal2);
         */
         
       }
