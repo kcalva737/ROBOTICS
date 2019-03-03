@@ -31,6 +31,8 @@ void loop() {
         case 12:
           ballLoad.relay_button(0,myString.val());
           break;
+        case 11:
+          analogWrite(myString.pin(), myString.val() ); 
         case 9:
           writeAPin(myString.pin(),myString.val() );
         
