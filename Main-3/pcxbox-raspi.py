@@ -189,7 +189,7 @@ class controller:
                         self.original[i][j]-= 1+abs(self.value[i][j] - self.original[i][j] )/4 #math.sqrt(abs(self.original[i][j]-self.value[i][j])+1)
                     
                     time.sleep(0.02)
-                    print  "abs change in val: ", abs(self.value[i][j] - self.original[i][j] ),"value: ",self.original[i][j]
+                    #print  "abs change in val: ", abs(self.value[i][j] - self.original[i][j] ),"value: ",self.original[i][j]
                     
                     #print(j)#prints out value of input being pressed
                     
