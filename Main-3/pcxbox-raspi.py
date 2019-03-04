@@ -142,6 +142,39 @@ class controller:
         for i in range(self.total_control):
             for j in range(int( self.total[i] ) ):
                 if(self.original[i][j] != self.value[i][j] ):
+                    #control mapping:
+                    #analog:
+                        #left-analog:
+                            #x-axis:0
+                            #y-axis:1
+                        #right-analog:
+                            #x-axis:3
+                            #y-axis:4
+                        #left-trigger:
+                            #vertical-axis:2
+                        #right-trigger:
+                            #vertical-axis:5
+                    #digital:
+                        #left-bumper:10
+                        #right-bumper:11
+
+                        #U-D-L-R:
+                            #UP:19
+                            #Down:20
+                            #Left:18
+                            #Right:17
+                        
+                        #Y-A-X-B
+                            #Y:9
+                            #A:6
+                            #X:8
+                            #B:7
+                        
+                        #Back-Home-Start
+                            #Back:12
+                            #Home:14
+                            #Start:13
+
                     #self.original[i][j] = self.value[i][j]
                     print "change in val: ",i," and  ",j #index of the values changing
                     #self.original[i][j] = self.value[i][j]
@@ -178,13 +211,28 @@ class controller:
                         #temp = self.print_command('B',"?",00, 0 )
                         myString.append('?')
                     #6 and 9 map to A and Y
-                    elif(j == 6):
-                        temp = encode(13,self.original[0][6])
+
+                    elif(j == 17):#relay switch
+                        temp = encode(13,self.original[0][17])
                         myString.append(temp)
+                    elif(j == 18):
+                        temp = encode(12,self.original[0][18])
+                        myString.append(temp)
+
+                    elif(j == 19):#rela swithc
+                        temp = encode(11,self.original[0][19])
+                        myString.append(temp)
+                    elif(j == 20):
+                        temp = encode(10,self.original[0][20])
+                        myString.append(temp)
+                    
                     elif(j == 9):
-                        temp = encode(12,self.original[0][9])
+                        temp = encode(9,self.original[0][9])
                         myString.append(temp)
-                
+                    elif(j == 6):
+                        temp = encode(8,self.original[0][6])
+                        myString.append(temp)
+                        
                 if(self.value[0][8] == 1):
                     if(self.counter[0] < self.maxCounter):
                         self.counter[0] = self.counter[0]+1
