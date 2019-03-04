@@ -5,20 +5,26 @@ extern char channel;
 #include <SoftwareSerial.h>
 SoftwareSerial xbee(2,3);
 
-void decode(unsigned char *myChar,int& pin, int& value){
+void decode(unsigned char *myChar,int& pin, int& value){ //decodes input string, message being received are 3 characters
+  //message being decoded is 3 char of length
+  //Char of index[0] is '#'
+  //Char message of index[1]and[2]:
+  //pin number  pin-value
+  //000000      (00-00000000)
+  
   pin=0;//range: [0-65]
   value=0;//range: [0-1023]
 
-  for(unsigned int i=0;i<8;i++){
-    value += (myChar[2]&1) * (1<<i);
+  for(unsigned int i=0;i<8;i++){//decoder for pin-value
+    value += (myChar[2] & 1) * (1<<i);
     myChar[2] = myChar[2]>>1;
   }
-  for(unsigned int i=0;i<2;i++){
+  for(unsigned int i=0;i<2;i++){//decode for pin-value
     value += (myChar[1 ] &1) * (1 << (i+8));
     myChar[1] = myChar[1]>>1;
   }
 
-  for(unsigned int i=0;i<6;i++){
+  for(unsigned int i=0;i<6;i++){//decode for pin
     pin += (myChar[1] & 1) * (1 << i);
     myChar[1] = myChar[1] >>1;
   }
@@ -26,17 +32,11 @@ void decode(unsigned char *myChar,int& pin, int& value){
 }
 
 class SerialString{
-  //#B13-1234N
-  // 0123456789
-  //public:
   private:
-  
     int maxlength;
-    
     int myPin;
     int myValue;
     char myCommand;
-    //char myChannel;
     
     char *myString;
  

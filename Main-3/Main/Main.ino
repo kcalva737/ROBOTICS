@@ -13,9 +13,9 @@ char channel = 'B';
 
 myServo myServo;
 SerialString myString;
-relayControl ballLoad(13,12);
-relayControl Arm(11,10);
-relayControl Arm2(9,8);
+relayControl ballLoad(13,12); //initialize relayControl with input pins for relays
+relayControl Arm(11,10); //initialize relayControl with input pins for relays
+relayControl Arm2(9,8); //initialize relayControl with input pins for relays
 
 void setup(){
   Serial.begin(9600);
@@ -46,6 +46,13 @@ void loop() {
           break;
         case 8:
           Arm2.relay_button(0,myString.val());
+          break;
+
+        case 6:
+          writeAPin(myString.pin(),myString.val() );
+          break;
+        case 5:
+          writeAPin(myString.pin(),myString.val() );
           break;
          
 
