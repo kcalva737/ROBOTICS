@@ -69,7 +69,7 @@ class SerialString{
 
 bool SerialString::input_string(){
   unsigned char myChar[4];
-  delay(1);
+  delay(10);
   if(Serial.available() < 3){//if length is less than 3, return false
     return false;
   }

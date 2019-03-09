@@ -28,6 +28,7 @@ Servo myServo4;
 
 void setup(){
   Serial.begin(9600);
+  Serial1.begin(9600);
   //xbee.begin(9600);
   //myString.intro();
   axis1.attach(12);
@@ -41,31 +42,33 @@ void setup(){
 }
 void loop() {
   if(myString.input_string() ){//alternate between input.string() and input_xbee() 
-      myString.print_input();
+      //myString.print_input();
       switch(myString.pin()){
         //X-Yaxis
-        case 13:
+        case 12:
           //writeAPin(myString.pin(),myString.val() );
           axis1.write(myString.val() );
           break;
-        case 12:
+        case 11:
           //writeAPin(myString.pin(),myString.val() );
           axis2.write(myString.val() );
           break;
           
         //ServoArm
-        case 11:
+        case 9:
           myServo0.write(myString.val());
           myServo1.write(180 - myString.val());
           break;
-          
-        case 9:
+        case 8:
           myServo2.write(myString.val());
           break;
-        case 8:
+        case 7:
           myServo3.write(myString.val());
           break;
-        case 7:
+        case 6:
+          myServo4.write(myString.val());
+          break;
+        case 5:
           myServo4.write(myString.val());
           break;
 
@@ -87,8 +90,8 @@ void loop() {
           break;
 
         case 26:
-          //writeDPin(myString.pin(),myString.val() );
-          Arm2.relay_button(myString.val() ,0);
+          writeDPin(myString.pin(),myString.val() );
+          //Arm2.relay_button(myString.val() ,0);
           break;
         case 27:
           Arm2.relay_button(0,myString.val());

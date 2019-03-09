@@ -65,7 +65,7 @@ class controller:
     total =[]
     channel = "Hello"
 
-    maxCounter = 120000000000#1000000
+    maxCounter = 10000#1000000
     counter = [0] * 10
     degreeValue = [0] * 10
 
@@ -205,8 +205,12 @@ class controller:
                             #Home:14
                             #Start:13
 
+                        #AnalogButton
+                            #Left-Axis-Button:15
+                            #Right-Axis-Button:16
+
                     #self.original[i][j] = self.value[i][j]
-                    print "change in val: ",i," and  ",j #index of the values changing
+                    # print "change in val: ",i," and  ",j #index of the values changing
                     #self.original[i][j] = self.value[i][j]
                     #print "change in val: ",i," and  ",j #index of the values changing
                     # if(abs(self.value[i][j] - self.original[i][j] ) < 1000 ):
@@ -237,14 +241,17 @@ class controller:
                     #         temp = encode(0,self.restrictPWM(self.original[i][j]) )``````````````````````````````````````````````````````````````````````````````````````````````````````````````
                     #     #print(encode(10, self.restrictPWM(self.value[i][j]) ) )
                     #     myString.append(temp)
+                    # print self.original[0][5]
 
                     if(j==1):#left analog- xaxis
                         temp = encode(12,self.restrictDegree(self.original[i][j]) )
                         myString.append(temp)
 
-                    elif(j==1):#left analog- yaxis
+                    elif(j==0):#left analog- yaxis
                         temp = encode(11,self.restrictDegree(self.original[i][j]) )
                         myString.append(temp)
+
+
 
 
                     elif(j == 11):
@@ -292,21 +299,40 @@ class controller:
                         temp = encode(7,self.degreeValue[2] )
                         myString.append(temp)
 
-                    elif(j == 7):
-                        self.degreeValue[2] += 1
-                        if(self.degreeValue[2] > self.maxRange):
-                            self.degreeValue[2] = self.maxRange-1
-                        # print self.degreeValue[2]
-                        temp = encode(7,self.degreeValue[2] )
+                    elif(j == 4):
+                        #print self.original[0][4]
+                        if(self.original[0][4] > 530):
+                            self.degreeValue[3] += 1
+                            if(self.degreeValue[3] > self.maxRange):
+                                self.degreeValue[3] = self.maxRange -1
+                            print self.degreeValue[3]
+                            temp = encode(6,self.degreeValue[2] )
+                            myString.append(temp)
+                        if(self.original[0][4] < 490):
+                            self.degreeValue[3] -= 1
+                            if(self.degreeValue[3] < 0):
+                                self.degreeValue[3] = 0
+                            print self.degreeValue[3]
+                            temp = encode(6,self.degreeValue[3] )
+                            myString.append(temp)
+
+                    elif(j == 16):
+                        self.degreeValue[4] += 1
+                        if(self.degreeValue[4] > self.maxRange):
+                            self.degreeValue[4] = self.maxRange-1
+                        print self.degreeValue[4]
+                        temp = encode(5,self.degreeValue[4] )
                         myString.append(temp)
-                    elif(j == 6):
-                        self.degreeValue[2] -= 1
-                        if(self.degreeValue[2] < 0):
-                            self.degreeValue[2] = 0
-                        # print self.degreeValue[2]
-                        temp = encode(7,self.degreeValue[2] )
+                    elif(j == 15):
+                        self.degreeValue[4] -= 1
+                        if(self.degreeValue[4] < 0):
+                            self.degreeValue[4] = 0
+                        # print self.degreeValue[4]
+                        temp = encode(5,self.degreeValue[4] )
                         myString.append(temp)
-                    
+                            
+
+
 
 
 
@@ -331,10 +357,59 @@ class controller:
                     elif(j == 9):#right
                         temp = encode(27,self.original[0][9])
                         myString.append(temp)
-
                     # print(j)#prints out value of input being pressed
                     # print(self.original[i][j] )#prints value of input
-   
+
+                # self.counter[0] +=1
+                # if(self.counter[0] > self.maxCounter):
+                #     # print "counter: ", self.counter[0]
+                #     self.counter[0] = 0
+                #     if(self.original[0][11]):
+                #         self.degreeValue[0] += 1
+                #         if(self.degreeValue[0] > self.maxRange):
+                #             self.degreeValue[0] = self.maxRange-1
+                #         print self.degreeValue[0]
+                #         temp = encode(9,self.degreeValue[0] )
+                #         myString.append(temp)
+                #     # elif(j == 10):
+                #     elif(self.original[0][10]):
+                #         self.degreeValue[0] -= 1
+                #         if(self.degreeValue[0] < 0):
+                #             self.degreeValue[0] = 0
+                #         print self.degreeValue[0]
+                #         temp = encode(9,self.degreeValue[0] )
+                #         myString.append(temp)
+
+                #     elif(self.original[0][7]):#j == 7):
+                #         self.degreeValue[2] += 1
+                #         if(self.degreeValue[2] > self.maxRange):
+                #             self.degreeValue[2] = self.maxRange-1
+                #         # print self.degreeValue[2]
+                #         temp = encode(7,self.degreeValue[2] )
+                #         myString.append(temp)
+                #     elif(self.original[0][6]): #j == 6):
+                #         self.degreeValue[2] -= 1
+                #         if(self.degreeValue[2] < 0):
+                #             self.degreeValue[2] = 0
+                #         # print self.degreeValue[2]
+                #         temp = encode(7,self.degreeValue[2] )
+                #         myString.append(temp)
+                    
+                #     elif( self.value[0][5] > 0):#j == 5):
+                #         self.degreeValue[1] += 1
+                #         if(self.degreeValue[1] > self.maxRange):
+                #             self.degreeValue[1] = self.maxRange-1
+                #         print self.degreeValue[1]
+                #         temp = encode(8,self.degreeValue[1] )
+                #         myString.append(temp)
+                #     elif(self.value[0][2] > 0):#j == 2):
+                #         self.degreeValue[1] -= 1
+                #         if(self.degreeValue[1] < 0):
+                #             self.degreeValue[1] = 0
+                #         print self.degreeValue[1]
+                #         temp = encode(8,self.degreeValue[1] )
+                #         myString.append(temp)
+                
         return myString
 
 SOCKET = False

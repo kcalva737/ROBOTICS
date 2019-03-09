@@ -22,12 +22,16 @@ Servo myServo9;
 Servo myServo6;
 Servo myServo5;
 Servo myServo3;
+Servo axis1;
+Servo axis2;
 int myNumber[10] = {0,0,0,0,0,0,0,0,0};
 
 void setup(){
   Serial.begin(9600);
   xbee.begin(9600);
-
+  axis1.attach(11);
+  axis1.attach(10);
+  
   myServo9.attach(9);
   myServo6.attach(6);
   myServo5.attach(5);
@@ -43,17 +47,17 @@ void loop() {
       myString.print_input();
       switch(myString.pin()){
         case 13: //linear actuator
-          ballLoad.relay_button(myString.val() ,0);
+          Arm0.relay_button(myString.val() ,0);
           break;
         case 12:
-          ballLoad.relay_button(0,myString.val());
+          Arm0.relay_button(0,myString.val());
           break;
           
         case 8: //linear actuator
-          Arm.relay_button(myString.val() ,0);
+          Arm1.relay_button(myString.val() ,0);
           break;
         case 7:
-          Arm.relay_button(0,myString.val());
+          Arm1.relay_button(0,myString.val());
           break;
 
         case 4: //linear actuator
@@ -65,10 +69,12 @@ void loop() {
 
 
         case 11://X axis
-          writeAPin(myString.pin(),myString.val() );
+          //writeAPin(myString.pin(),myString.val() );
+          axis1.write(myString.val() );
           break;
         case 10://y axis
-          writeAPin(myString.pin(),myString.val() );
+          //writeAPin(myString.pin(),myString.val() );
+          axis1.write(myString.val() );
           break;
 
 
